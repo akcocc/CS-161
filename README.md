@@ -1,3 +1,3 @@
-# Hi!
+# CS-161
+For CS 161 at COCC
 
-All my CS161 submissions can be found in this repo :>
