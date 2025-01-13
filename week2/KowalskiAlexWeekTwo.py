@@ -16,3 +16,16 @@ if __name__ == "__main__":
     print("Alternitve representation assignment:", y, z)
 
     print("Sum between representations:", y + z)
+
+    original_size = 240
+
+    dictionary_size = 25
+    compressed_size = 148
+
+    percent_of_compression = (compressed_size + dictionary_size)/original_size
+
+    print("Original Size:", original_size)
+    print("Dictionary Size:", dictionary_size)
+    print("Compressed Size:", compressed_size)
+
+    print(f"Theoretical compression rate given the above parameters: {percent_of_compression * 10}%")
