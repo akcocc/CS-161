@@ -5,6 +5,8 @@ from ctypes import c_uint16
 
 from typing import Dict
 
+if __name__ == "__main__":
+    print("run `KowalskiAlexWeekTwo.py` instead.")
 
 def generate_init_dict() -> Dict[str, c_uint16]:
     dictionary: Dict[str, c_uint16] = {}
@@ -141,7 +143,6 @@ def compression(file_path: str):
     comp_file = open(f"{file_path}.lzw", "wb")
     comp_file.write(output_buffer)
     comp_file.close()
-
 
 def decompression(file_path: str):
     comp_file = open(f"{file_path}", "rb")
