@@ -50,8 +50,15 @@ if __name__ == "__main__":
     adding_reps()
     theor_compr_rate()
 
-    file_path = argv[1]
+    try:
+        file_path = argv[1]
+        if exists(file_path):
+            # Very jank
+            if lzw.get_path_extension(file_path) == ".lzw":
+                print("\nDecompressing file...\n")
+                lzw.decompression(file_path)
+            else:
+                lzw.compression(file_path)
+    except:
+        exit(0)
 
-    if file_path != "" and exists(file_path):
-        print("\nCompressing file...\n")
-        lzw.compression(file_path)

@@ -62,7 +62,7 @@ def build_code_buffer(original_contents: str) -> list[c_uint16]:
     code_buffer.append(dictionary[sequence])
     return code_buffer
 
-def build_text_buffer(input_codes: list[int]):
+def build_text_buffer(input_codes: list[int]) -> str:
     # As with encoding data, we again initialize a dictionary with each code
     # 0-255 being ASCII characters.
     dictionary: Dict[int, str] = generate_init_dict_rev()
@@ -71,16 +71,33 @@ def build_text_buffer(input_codes: list[int]):
     previous_str = ""
     next_code = 255
 
-    # While decompressing data, it's important to keep track of every string
-    # appended to the output, as each
+    # First, it's important to keep track of every string
+    # appended to the output, as each each case (whether the dictionary holds a
+    # given code) relies on the last outputted string to add new entries to the
+    # dictionary.
+    #
+    # With that, for every code in `input_codes`, we check if it is in the
+    # dictionary. If it is, we make a new dictionary entry containing the last
+    # outputted string (if it exists) and the first character of our current
+    # code's corresponding string pattern, concatenated together. Next, we
+    # append our new dictionary entry to the output and set `previous_str` to
+    # the outputted string.
+    # If the current code is not in the dictionary, however, we make a new
+    # dictionary entry containing `previous_str` concatenated with its first
+    # character.
+    #
+    # By doing all of this, we're essnetially re-tracing the steps the encoder
+    # took while building *its* dictionary, while using the same base dictionary
+    # of ASCII characters, to get back the original text that was encoded.
     for code in input_codes:
         if code in dictionary:
-            output_text += dictionary[code]
-
             # Only add a new entry if a previously outputed string exists
             if previous_str != "":
                 next_code += 1
                 dictionary[next_code] = previous_str + dictionary[code][0]
+
+            output_text += dictionary[code]
+
             previous_str = dictionary[code]
         else:
             new_str = previous_str + previous_str[0]
@@ -88,9 +105,14 @@ def build_text_buffer(input_codes: list[int]):
             dictionary[next_code] = new_str
             output_text += new_str
             previous_str = new_str
-    print(output_text)
+    return output_text
 
 
+# since writing c's u16's resulted in their bytes represented in little-endian
+# format, we need to get back our codes by taking every 2 bytes in the input
+# buffer and reading them as little-endian. And since the size of our ints
+# doesn't really matter at this point, we can just proceed with python's regular
+# `int` type.
 def convert_bytes_to_codes(original_bytes: bytes) -> list[int]:
     cursor = 0
     output_codes: list[int] = []
@@ -115,14 +137,32 @@ def compression(file_path: str):
     for code in code_buffer:
         output_buffer.extend(bytearray(code))
 
+    print(f"Compressed data is {(len(output_buffer)/len(original_contents))*100}% of the original size")
     comp_file = open(f"{file_path}.lzw", "wb")
     comp_file.write(output_buffer)
     comp_file.close()
 
 
 def decompression(file_path: str):
-    comp_file = open(f"{file_path}.lzw", "rb")
+    comp_file = open(f"{file_path}", "rb")
     input_buffer = comp_file.read()
-    original_codes = convert_bytes_to_codes(input_buffer)
-    build_text_buffer(original_codes)
     comp_file.close()
+
+    original_codes = convert_bytes_to_codes(input_buffer)
+    output_text = build_text_buffer(original_codes)
+
+    uncomp_file = open(f"{file_path}.txt", "w")
+    uncomp_file.write(output_text)
+    uncomp_file.close()
+
+    print(f"Uncompressed file can be found at {file_path}")
+
+def get_path_extension(path: str):
+    extension = ""
+
+    # `some_str[::-1] reverses the string
+    for c in path[::-1]:
+        extension = c + extension
+        if c == "." or len(extension) > 4:
+            break
+    return extension
