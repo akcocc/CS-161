@@ -118,7 +118,7 @@ def get_income() -> float:
     print(f"\nYour gross pay this week is ${weekly_income}")
 
     # about 50 working weeks
-    gross_annual_income = weekly_income * 50
+    gross_annual_income = float(hourly_wage) * float(hours) * 50
 
     print(f"Your estimated annual gross income will be ${gross_annual_income}")
 
