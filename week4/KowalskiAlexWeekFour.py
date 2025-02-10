@@ -316,7 +316,6 @@ if __name__ == "__main__":
     ensure_file_downloaded("./IceCreamFlation.xlsx", url, "post", data, {
         "content-type": "application/x-www-form-urlencoded"
     })
-
     dog_years = 5
     print(f"{dog_years} dog years is equivalent to {dog_to_human_years(dog_years)} human years")
 
