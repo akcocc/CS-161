@@ -136,6 +136,19 @@ def heat_death():
     print("Eventually there will be no stars...\n");
 
 def sum_digits_func(input: str) -> int:
+    """
+    Recursively sums the digits of a number.
+
+    Parameters
+    ----------
+        input: str
+            a stringified number
+
+    Returns
+    -------
+        int
+            the sum of the digits
+    """
     if len(input) > 0:
         return int(input[0]) + sum_digits_func(input[1:])
     else:
@@ -154,6 +167,19 @@ def sum_digits():
     print(f"The sum of the digits of {num} is {sum_digits_func(num)}\n")
 
 def palindrome_check(word: str) -> bool:
+    """
+    Recursively checks if a word is a palindrome.
+
+    Parameters
+    ----------
+        word: str
+            a string to check its status as a palindrome
+
+    Returns
+    -------
+        bool
+            `True` if it is a palindrome, `False` if not.
+    """
     # We check if the first and last characters are the same
     if len(word) > 0 and word[0] == word[len(word)-1]:
         # Then we pass in the same word with the first and last characters removed
