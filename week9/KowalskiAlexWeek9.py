@@ -88,8 +88,6 @@ if __name__ == "__main__":
     print("Name: ", johnson.name);
     print("Age: ", jeffery.age);
     print("Grade: ", jeffery.grade, "\n");
-    print(johnson.age);
-    print(johnson.role);
 
     square1 = Square(30);
     print("Square 1:");
