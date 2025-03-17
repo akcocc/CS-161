@@ -98,7 +98,7 @@ class SolarObject:
         print(f"Distance from Sun: {self.farthest_distance} AU");
         print(f"Orbit Pattern: {self.spin()}");
         print(f"Average Orbital Period: {self.average_orbit_period} {self.orbit_period_units}");
-        formatted_num = "{:.3}".format(self.colonization());
+        formatted_num = "{:.2f}".format(self.colonization());
         print(f"Colinization Potential: {formatted_num} billion people\n");
 
 class Planet(SolarObject):
