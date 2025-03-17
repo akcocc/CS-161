@@ -7,8 +7,8 @@ class SolarObject:
 
     name: str;
 
-    # Days
     average_orbit_period: float;
+    orbit_period_units: str;
 
     def __init__(self,
         name: str,
@@ -97,27 +97,30 @@ class SolarObject:
         print(f"Object: {self.name}");
         print(f"Distance from Sun: {self.farthest_distance} AU");
         print(f"Orbit Pattern: {self.spin()}");
-        print(f"Average Orbital Period: {self.average_orbit_period} days");
+        print(f"Average Orbital Period: {self.average_orbit_period} {self.orbit_period_units}");
         formatted_num = "{:.3}".format(self.colonization());
         print(f"Colinization Potential: {formatted_num} billion people\n");
 
 class Planet(SolarObject):
+    orbit_period_units = "days";
+
     def spin(self) -> str:
         return "slightly eliptical";
 
 
 class Comet(SolarObject):
+    orbit_period_units = "years";
+
     def spin(self) -> str:
         return "spins like crazy";
 
-YEAR = 365;
 if __name__ == "__main__":
     earth = Planet("Earth", 1, 365);
     mars = Planet("Mars", 1.4, 687);
 
     # Have to convert these to days since our base class uses days
-    halley = Comet("Halley's Comet", 35, 76.95*YEAR);
-    halebopp = Comet("Hale-Bopp", 354, 2397.29*YEAR);
+    halley = Comet("Halley's Comet", 35, 76.95);
+    halebopp = Comet("Hale-Bopp", 354, 2397.29);
 
     earth.display_solar_object();
     mars.display_solar_object();
